@@ -87,7 +87,7 @@ jobs:
 
       # On a cache hit this only installs the OS packages.
       - name: Install Playwright driver, browsers and OS deps
-        run: mix playwright.install -- chromium --with-deps
+        run: mix playwright.install chromium --with-deps
 
       - name: Install asset dependencies
         run: npm install --prefix assets
