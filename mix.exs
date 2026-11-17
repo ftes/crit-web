@@ -80,7 +80,10 @@ defmodule Crit.MixProject do
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
       {:mix_audit, "~> 2.1", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.18", only: :test},
-      {:playwright, github: "ftes/playwright_ex", ref: "0217c3445a6845750cdd2a9ce0355588b0147356", only: [:dev, :test]}
+      {:playwright,
+       github: "ftes/playwright_ex",
+       ref: "0217c3445a6845750cdd2a9ce0355588b0147356",
+       only: [:dev, :test]}
     ]
   end
 
