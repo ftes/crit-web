@@ -251,12 +251,12 @@ defmodule CritWeb.E2E.CodeFilesTest do
       # The thread is below line 7 and above line 8.
       Expect.to_pass!(fn ->
         [line7, card_box, line8] =
-          [
+          Promise.all([
             Promise.async(fn -> Locator.bounding_box!(code_line(page, "server.go", 7)) end),
             Promise.async(fn -> Locator.bounding_box!(card) end),
             Promise.async(fn -> Locator.bounding_box!(code_line(page, "server.go", 8)) end)
-          ]
-          |> Enum.map(&Promise.await!/1)
+          ])
+          |> Promise.await!()
 
         refute is_nil(line7)
         refute is_nil(card_box)
@@ -279,7 +279,7 @@ defmodule CritWeb.E2E.CodeFilesTest do
 
       Expect.to_pass!(
         fn ->
-          [tinted6, plain3, tinted7] = Enum.map([tint.(6), tint.(3), tint.(7)], &Promise.await!/1)
+          [tinted6, plain3, tinted7] = Promise.await!(Promise.all([tint.(6), tint.(3), tint.(7)]))
           refute tinted6 == plain3
           assert tinted7 == tinted6
         end,

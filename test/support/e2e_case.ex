@@ -24,9 +24,7 @@ defmodule CritWeb.E2ECase do
         Dialog,
         ElementHandle,
         FrameLocator,
-        JSHandle,
-        Keyboard,
-        Mouse
+        JSHandle
       }
 
       @moduletag unquote(tag)

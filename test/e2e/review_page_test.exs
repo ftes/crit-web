@@ -399,13 +399,16 @@ defmodule CritWeb.E2E.ReviewPageTest do
       Locator.scroll_into_view_if_needed!(last)
       # JS reassigns `let` boxes inside the toPass callback; return them instead.
       {first_box, last_box} =
-        retry_boxes(fn ->
-          first_box = Locator.bounding_box!(first)
-          last_box = Locator.bounding_box!(last)
-          refute is_nil(first_box)
-          refute is_nil(last_box)
-          {first_box, last_box}
-        end)
+        Expect.to_pass!(
+          fn ->
+            first_box = Locator.bounding_box!(first)
+            last_box = Locator.bounding_box!(last)
+            refute is_nil(first_box)
+            refute is_nil(last_box)
+            {first_box, last_box}
+          end,
+          timeout: 15_000
+        )
 
       refute is_nil(first_box)
       refute is_nil(last_box)
@@ -500,19 +503,6 @@ defmodule CritWeb.E2E.ReviewPageTest do
       Expect.to_be_visible!(annotation)
       assert Locator.evaluate!(annotation, "element => element.parentElement?.tagName") == "TBODY"
       Page.close!(observer)
-    end
-  end
-
-  defp retry_boxes(fun) do
-    parent = self()
-
-    Expect.to_pass!(
-      fn -> send(parent, {:boxes, fun.()}) end,
-      timeout: 15_000
-    )
-
-    receive do
-      {:boxes, boxes} -> boxes
     end
   end
 
